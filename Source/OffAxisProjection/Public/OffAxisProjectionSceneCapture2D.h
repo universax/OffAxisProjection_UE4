@@ -21,7 +21,9 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "SetTargetQuadPoints", Keywords = "OffAxisProjection SetTargetQuadPoints"), Category = "OffAxisProjection SceneCapture2D")
 		void SetTargetQuadPoints(FVector _pa, FVector _pb, FVector _pc);
 
-
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "UpdateProjectionMatrix", Keywords = "OffAxisProjection UpdateProjectionMatrix"), Category = "OffAxisProjection SceneCapture2D")
+		void UpdateProjectionMatrix();
+	
 	void UpdateProjectionMatrix_Internal(USceneCaptureComponent2D* captureComponent2D, FMatrix OffAxisMatrix);
 	FMatrix GenerateOffAxisMatrix(FVector _eyeRelativePositon);
 	FMatrix FrustumMatrix(float left, float right, float bottom, float top, float nearVal, float farVal);
@@ -38,4 +40,6 @@ private:
 	FVector pe = FVector::ZeroVector;
 
 	FVector eyePosition = FVector(-90.f, 100.f, 100.f);
+
+	FMatrix finalMat;
 };

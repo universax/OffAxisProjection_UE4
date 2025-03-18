@@ -7,8 +7,8 @@
 void AOffAxisProjectionSceneCapture2D::BeginPlay()
 {
 	Super::BeginPlay();
-
 	USceneCaptureComponent2D* captureComponent2D = GetCaptureComponent2D();
+
 	if (captureComponent2D)
 	{
 		captureComponent2D->bUseCustomProjectionMatrix = true;
@@ -18,7 +18,9 @@ void AOffAxisProjectionSceneCapture2D::BeginPlay()
 void AOffAxisProjectionSceneCapture2D::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+}
 
+void AOffAxisProjectionSceneCapture2D::UpdateProjectionMatrix() {
 	USceneCaptureComponent2D* captureComponent2D = GetCaptureComponent2D();
 	if (captureComponent2D)
 	{
@@ -56,7 +58,7 @@ void AOffAxisProjectionSceneCapture2D::UpdateProjectionMatrix_Internal(USceneCap
 	GEngine->AddOnScreenDebugMessage(11, 4, FColor::Red, FString::Printf(TEXT("tmpMat SC2D: %s"), *tmpMat.ToString()));
 
 	FMatrix calcedMatrix = GetProjectionMatrix(captureComponent2D);
-	//GEngine->AddOnScreenDebugMessage(16, 4, FColor::Red, FString::Printf(TEXT("calced SC2D: %s"), *calcedMatrix.ToString()));
+	GEngine->AddOnScreenDebugMessage(16, 4, FColor::Red, FString::Printf(TEXT("calced SC2D: %s"), *calcedMatrix.ToString()));
 
 	if (captureComponent2D)
 	{
@@ -75,11 +77,13 @@ void AOffAxisProjectionSceneCapture2D::UpdateProjectionMatrix_Internal(USceneCap
 			FPlane(curLocation.X, curLocation.Y, curLocation.Z, 1)
 		);
 
-		FMatrix finalMat = ViewMatrix * tmpMat;
+		finalMat = ViewMatrix * tmpMat;
 		GEngine->AddOnScreenDebugMessage(16, 4, FColor::Red, FString::Printf(TEXT("Transform inv SC2D: %s"), *ViewMatrix.ToString()));
 		GEngine->AddOnScreenDebugMessage(18, 4, FColor::Red, FString::Printf(TEXT("Result SC2D: %s"), *finalMat.ToString()));
 
 		captureComponent2D->CustomProjectionMatrix = finalMat;
+	//	captureComponent2D->UpdateContent();
+		captureComponent2D->CaptureSceneDeferred();
 	}
 }
 
